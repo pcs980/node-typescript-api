@@ -6,13 +6,17 @@ import stormGlassNormalizedWeather3Hours from '@test/fixtures/stormglass_normali
 jest.mock('@src/util/request');
 
 describe('StormGlass client', () => {
-  const mockedRequestClass = HTTPUtil.Request as jest.Mocked<typeof HTTPUtil.Request>;
+  const mockedRequestClass = HTTPUtil.Request as jest.Mocked<
+    typeof HTTPUtil.Request
+  >;
   const mockedHttp = new HTTPUtil.Request() as jest.Mocked<HTTPUtil.Request>;
 
   it('should return the normalized forecast from the StormGlass service', async () => {
     const lat = -9.012063;
     const lng = -35.219733;
-    mockedHttp.get.mockResolvedValue({ data: stormGlassWeather3Hours } as HTTPUtil.Response);
+    mockedHttp.get.mockResolvedValue({
+      data: stormGlassWeather3Hours,
+    } as HTTPUtil.Response);
 
     const stormGlass = new StormGlass(mockedHttp);
     const response = await stormGlass.fetchPoints(lat, lng);
@@ -32,7 +36,9 @@ describe('StormGlass client', () => {
         },
       ],
     };
-    mockedHttp.get.mockResolvedValue({ data: incompleteResponse } as HTTPUtil.Response);
+    mockedHttp.get.mockResolvedValue({
+      data: incompleteResponse,
+    } as HTTPUtil.Response);
 
     const stormGlass = new StormGlass(mockedHttp);
     const response = await stormGlass.fetchPoints(lat, lng);
@@ -71,5 +77,4 @@ describe('StormGlass client', () => {
       'Unexpected error returned by the StormGlass service: Error: {"errors":["Rate Limit reached"]} Code: 429'
     );
   });
-
 });
